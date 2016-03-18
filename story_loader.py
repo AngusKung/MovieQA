@@ -35,6 +35,7 @@ class StoryLoader(object):
 
     def _read_plot(self, plot_filename):
         """Read a plot synopsis file.
+        Also used to read split plots, where each line contains one sentence of the plot.
         """
         with open(plot_filename) as f:
             plot = f.readlines()
@@ -98,7 +99,7 @@ class StoryLoader(object):
 
         Args:
           movies_map: Dictionary of movie named tuples.
-          story_type: 'plot', 'subtitle', 'dvs', 'script'.
+          story_type: 'plot', 'split_plot', 'subtitle', 'dvs', 'script'.
 
         Returns:
           story: Story for each movie indexed by imdb_key.
@@ -115,6 +116,13 @@ class StoryLoader(object):
                 if not self._check_exists(plot_filename):
                     continue
                 this_story = self._read_plot(plot_filename)
+
+            elif story_type == 'split_plot':
+                fname = 'story/split_plot/' + imdb_key + '.split.wiki'
+                split_plot_filename = os.path.join(PKG, fname)
+                if not self._check_exists(split_plot_filename):
+                    continue
+                this_story = self._read_plot(split_plot_filename)
 
             elif story_type == 'subtitle':
                 if not movie.text.subtitle:
@@ -144,5 +152,8 @@ class StoryLoader(object):
                 raise ValueError('Unsupported story type!')
 
             story[imdb_key] = this_story
+
+        if not story:
+            raise ValueError('Story returned empty!')
 
         return story
