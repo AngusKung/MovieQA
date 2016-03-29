@@ -112,7 +112,7 @@
     "text": {
       "plot": "story/plot/tt1190080.wiki", 
       "subtitle": "story/subtt/tt1190080.srt", 
-      "dvs": "story/dvs/tt1190080.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1190080.script"
     }, 
     "imdb_key": "tt1190080", 
@@ -148,7 +148,7 @@
     "text": {
       "plot": "story/plot/tt0988595.wiki", 
       "subtitle": "story/subtt/tt0988595.srt", 
-      "dvs": "story/dvs/tt0988595.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0988595", 
@@ -436,7 +436,7 @@
     "text": {
       "plot": "story/plot/tt0086879.wiki", 
       "subtitle": "story/subtt/tt0086879.srt", 
-      "dvs": "story/dvs/tt0086879.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0086879.script"
     }, 
     "imdb_key": "tt0086879", 
@@ -448,7 +448,7 @@
     "text": {
       "plot": "story/plot/tt0169547.wiki", 
       "subtitle": "story/subtt/tt0169547.srt", 
-      "dvs": "story/dvs/tt0169547.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0169547.script"
     }, 
     "imdb_key": "tt0169547", 
@@ -520,7 +520,7 @@
     "text": {
       "plot": "story/plot/tt1174732.wiki", 
       "subtitle": "story/subtt/tt1174732.srt", 
-      "dvs": "story/dvs/tt1174732.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1174732.script"
     }, 
     "imdb_key": "tt1174732", 
@@ -616,7 +616,7 @@
     "text": {
       "plot": "story/plot/tt0119822.wiki", 
       "subtitle": "story/subtt/tt0119822.srt", 
-      "dvs": "story/dvs/tt0119822.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0119822.script"
     }, 
     "imdb_key": "tt0119822", 
@@ -628,7 +628,7 @@
     "text": {
       "plot": "story/plot/tt0455824.wiki", 
       "subtitle": "story/subtt/tt0455824.srt", 
-      "dvs": "story/dvs/tt0455824.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0455824", 
@@ -688,7 +688,7 @@
     "text": {
       "plot": "story/plot/tt0307987.wiki", 
       "subtitle": "story/subtt/tt0307987.srt", 
-      "dvs": "story/dvs/tt0307987.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0307987.script"
     }, 
     "imdb_key": "tt0307987", 
@@ -784,7 +784,7 @@
     "text": {
       "plot": "story/plot/tt0319061.wiki", 
       "subtitle": "story/subtt/tt0319061.srt", 
-      "dvs": "story/dvs/tt0319061.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0319061.script"
     }, 
     "imdb_key": "tt0319061", 
@@ -904,7 +904,7 @@
     "text": {
       "plot": "story/plot/tt0758774.wiki", 
       "subtitle": "story/subtt/tt0758774.srt", 
-      "dvs": "story/dvs/tt0758774.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0758774", 
@@ -1084,7 +1084,7 @@
     "text": {
       "plot": "story/plot/tt0034583.wiki", 
       "subtitle": "story/subtt/tt0034583.srt", 
-      "dvs": "story/dvs/tt0034583.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0034583", 
@@ -1120,7 +1120,7 @@
     "text": {
       "plot": "story/plot/tt0056923.wiki", 
       "subtitle": "story/subtt/tt0056923.srt", 
-      "dvs": "story/dvs/tt0056923.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0056923.script"
     }, 
     "imdb_key": "tt0056923", 
@@ -1132,7 +1132,7 @@
     "text": {
       "plot": "story/plot/tt0118842.wiki", 
       "subtitle": "story/subtt/tt0118842.srt", 
-      "dvs": "story/dvs/tt0118842.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0118842.script"
     }, 
     "imdb_key": "tt0118842", 
@@ -1156,7 +1156,7 @@
     "text": {
       "plot": "story/plot/tt0071315.wiki", 
       "subtitle": "story/subtt/tt0071315.srt", 
-      "dvs": "story/dvs/tt0071315.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0071315.script"
     }, 
     "imdb_key": "tt0071315", 
@@ -1204,7 +1204,7 @@
     "text": {
       "plot": "story/plot/tt0109445.wiki", 
       "subtitle": "story/subtt/tt0109445.srt", 
-      "dvs": "story/dvs/tt0109445.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0109445.script"
     }, 
     "imdb_key": "tt0109445", 
@@ -1264,7 +1264,7 @@
     "text": {
       "plot": "story/plot/tt1093908.wiki", 
       "subtitle": "story/subtt/tt1093908.srt", 
-      "dvs": "story/dvs/tt1093908.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt1093908", 
@@ -1324,7 +1324,7 @@
     "text": {
       "plot": "story/plot/tt1570728.wiki", 
       "subtitle": "story/subtt/tt1570728.srt", 
-      "dvs": "story/dvs/tt1570728.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1570728.script"
     }, 
     "imdb_key": "tt1570728", 
@@ -1564,7 +1564,7 @@
     "text": {
       "plot": "story/plot/tt0116282.wiki", 
       "subtitle": "story/subtt/tt0116282.srt", 
-      "dvs": "story/dvs/tt0116282.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0116282", 
@@ -1600,7 +1600,7 @@
     "text": {
       "plot": "story/plot/tt1907668.wiki", 
       "subtitle": "story/subtt/tt1907668.srt", 
-      "dvs": "story/dvs/tt1907668.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1907668.script"
     }, 
     "imdb_key": "tt1907668", 
@@ -1636,7 +1636,7 @@
     "text": {
       "plot": "story/plot/tt0109830.wiki", 
       "subtitle": "story/subtt/tt0109830.srt", 
-      "dvs": "story/dvs/tt0109830.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0109830.script"
     }, 
     "imdb_key": "tt0109830", 
@@ -1696,7 +1696,7 @@
     "text": {
       "plot": "story/plot/tt0083987.wiki", 
       "subtitle": "story/subtt/tt0083987.srt", 
-      "dvs": "story/dvs/tt0083987.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0083987.script"
     }, 
     "imdb_key": "tt0083987", 
@@ -1708,7 +1708,7 @@
     "text": {
       "plot": "story/plot/tt0113161.wiki", 
       "subtitle": "story/subtt/tt0113161.srt", 
-      "dvs": "story/dvs/tt0113161.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0113161", 
@@ -1828,7 +1828,7 @@
     "text": {
       "plot": "story/plot/tt1205489.wiki", 
       "subtitle": "story/subtt/tt1205489.srt", 
-      "dvs": "story/dvs/tt1205489.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1205489.script"
     }, 
     "imdb_key": "tt1205489", 
@@ -1912,7 +1912,7 @@
     "text": {
       "plot": "story/plot/tt0295297.wiki", 
       "subtitle": "story/subtt/tt0295297.srt", 
-      "dvs": "story/dvs/tt0295297.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0295297", 
@@ -1924,7 +1924,7 @@
     "text": {
       "plot": "story/plot/tt0926084.wiki", 
       "subtitle": "story/subtt/tt0926084.srt", 
-      "dvs": "story/dvs/tt0926084.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0926084", 
@@ -1936,7 +1936,7 @@
     "text": {
       "plot": "story/plot/tt1201607.wiki", 
       "subtitle": "story/subtt/tt1201607.srt", 
-      "dvs": "story/dvs/tt1201607.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt1201607", 
@@ -1948,7 +1948,7 @@
     "text": {
       "plot": "story/plot/tt0330373.wiki", 
       "subtitle": "story/subtt/tt0330373.srt", 
-      "dvs": "story/dvs/tt0330373.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0330373", 
@@ -1960,7 +1960,7 @@
     "text": {
       "plot": "story/plot/tt0417741.wiki", 
       "subtitle": "story/subtt/tt0417741.srt", 
-      "dvs": "story/dvs/tt0417741.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0417741", 
@@ -1972,7 +1972,7 @@
     "text": {
       "plot": "story/plot/tt0373889.wiki", 
       "subtitle": "story/subtt/tt0373889.srt", 
-      "dvs": "story/dvs/tt0373889.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0373889", 
@@ -1984,7 +1984,7 @@
     "text": {
       "plot": "story/plot/tt0304141.wiki", 
       "subtitle": "story/subtt/tt0304141.srt", 
-      "dvs": "story/dvs/tt0304141.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0304141", 
@@ -1996,7 +1996,7 @@
     "text": {
       "plot": "story/plot/tt0241527.wiki", 
       "subtitle": "story/subtt/tt0241527.srt", 
-      "dvs": "story/dvs/tt0241527.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0241527", 
@@ -2056,7 +2056,7 @@
     "text": {
       "plot": "story/plot/tt1499658.wiki", 
       "subtitle": "story/subtt/tt1499658.srt", 
-      "dvs": "story/dvs/tt1499658.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1499658.script"
     }, 
     "imdb_key": "tt1499658", 
@@ -2164,7 +2164,7 @@
     "text": {
       "plot": "story/plot/tt0097576.wiki", 
       "subtitle": "story/subtt/tt0097576.srt", 
-      "dvs": "story/dvs/tt0097576.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0097576.script"
     }, 
     "imdb_key": "tt0097576", 
@@ -2296,7 +2296,7 @@
     "text": {
       "plot": "story/plot/tt0467406.wiki", 
       "subtitle": "story/subtt/tt0467406.srt", 
-      "dvs": "story/dvs/tt0467406.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0467406.script"
     }, 
     "imdb_key": "tt0467406", 
@@ -2464,7 +2464,7 @@
     "text": {
       "plot": "story/plot/tt1707386.wiki", 
       "subtitle": "story/subtt/tt1707386.srt", 
-      "dvs": "story/dvs/tt1707386.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1707386.script"
     }, 
     "imdb_key": "tt1707386", 
@@ -2632,7 +2632,7 @@
     "text": {
       "plot": "story/plot/tt0822832.wiki", 
       "subtitle": "story/subtt/tt0822832.srt", 
-      "dvs": "story/dvs/tt0822832.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0822832.script"
     }, 
     "imdb_key": "tt0822832", 
@@ -2656,7 +2656,7 @@
     "text": {
       "plot": "story/plot/tt0119643.wiki", 
       "subtitle": "story/subtt/tt0119643.srt", 
-      "dvs": "story/dvs/tt0119643.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0119643.script"
     }, 
     "imdb_key": "tt0119643", 
@@ -2704,7 +2704,7 @@
     "text": {
       "plot": "story/plot/tt0119654.wiki", 
       "subtitle": "story/subtt/tt0119654.srt", 
-      "dvs": "story/dvs/tt0119654.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0119654.script"
     }, 
     "imdb_key": "tt0119654", 
@@ -3136,7 +3136,7 @@
     "text": {
       "plot": "story/plot/tt0110912.wiki", 
       "subtitle": "story/subtt/tt0110912.srt", 
-      "dvs": "story/dvs/tt0110912.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0110912.script"
     }, 
     "imdb_key": "tt0110912", 
@@ -3352,7 +3352,7 @@
     "text": {
       "plot": "story/plot/tt0286106.wiki", 
       "subtitle": "story/subtt/tt0286106.srt", 
-      "dvs": "story/dvs/tt0286106.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0286106.script"
     }, 
     "imdb_key": "tt0286106", 
@@ -3412,7 +3412,7 @@
     "text": {
       "plot": "story/plot/tt1010048.wiki", 
       "subtitle": "story/subtt/tt1010048.srt", 
-      "dvs": "story/dvs/tt1010048.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1010048.script"
     }, 
     "imdb_key": "tt1010048", 
@@ -3460,7 +3460,7 @@
     "text": {
       "plot": "story/plot/tt0316654.wiki", 
       "subtitle": "story/subtt/tt0316654.srt", 
-      "dvs": "story/dvs/tt0316654.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0316654", 
@@ -3628,7 +3628,7 @@
     "text": {
       "plot": "story/plot/tt1385826.wiki", 
       "subtitle": "story/subtt/tt1385826.srt", 
-      "dvs": "story/dvs/tt1385826.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1385826.script"
     }, 
     "imdb_key": "tt1385826", 
@@ -3640,7 +3640,7 @@
     "text": {
       "plot": "story/plot/tt0118715.wiki", 
       "subtitle": "story/subtt/tt0118715.srt", 
-      "dvs": "story/dvs/tt0118715.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0118715.script"
     }, 
     "imdb_key": "tt0118715", 
@@ -3700,7 +3700,7 @@
     "text": {
       "plot": "story/plot/tt0289879.wiki", 
       "subtitle": "story/subtt/tt0289879.srt", 
-      "dvs": "story/dvs/tt0289879.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0289879.script"
     }, 
     "imdb_key": "tt0289879", 
@@ -3736,7 +3736,7 @@
     "text": {
       "plot": "story/plot/tt0104036.wiki", 
       "subtitle": "story/subtt/tt0104036.srt", 
-      "dvs": "story/dvs/tt0104036.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0104036", 
@@ -3748,7 +3748,7 @@
     "text": {
       "plot": "story/plot/tt0421715.wiki", 
       "subtitle": "story/subtt/tt0421715.srt", 
-      "dvs": "story/dvs/tt0421715.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0421715.script"
     }, 
     "imdb_key": "tt0421715", 
@@ -3796,7 +3796,7 @@
     "text": {
       "plot": "story/plot/tt0970416.wiki", 
       "subtitle": "story/subtt/tt0970416.srt", 
-      "dvs": "story/dvs/tt0970416.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0970416.script"
     }, 
     "imdb_key": "tt0970416", 
@@ -3808,7 +3808,7 @@
     "text": {
       "plot": "story/plot/tt0458352.wiki", 
       "subtitle": "story/subtt/tt0458352.srt", 
-      "dvs": "story/dvs/tt0458352.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt0458352", 
@@ -3940,7 +3940,7 @@
     "text": {
       "plot": "story/plot/tt0061722.wiki", 
       "subtitle": "story/subtt/tt0061722.srt", 
-      "dvs": "story/dvs/tt0061722.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0061722.script"
     }, 
     "imdb_key": "tt0061722", 
@@ -3976,7 +3976,7 @@
     "text": {
       "plot": "story/plot/tt1343092.wiki", 
       "subtitle": "story/subtt/tt1343092.srt", 
-      "dvs": "story/dvs/tt1343092.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt1343092", 
@@ -4000,7 +4000,7 @@
     "text": {
       "plot": "story/plot/tt1454029.wiki", 
       "subtitle": "story/subtt/tt1454029.srt", 
-      "dvs": "story/dvs/tt1454029.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1454029.script"
     }, 
     "imdb_key": "tt1454029", 
@@ -4168,7 +4168,7 @@
     "text": {
       "plot": "story/plot/tt0120737.wiki", 
       "subtitle": "story/subtt/tt0120737.srt", 
-      "dvs": "story/dvs/tt0120737.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0120737.script"
     }, 
     "imdb_key": "tt0120737", 
@@ -4180,7 +4180,7 @@
     "text": {
       "plot": "story/plot/tt0167260.wiki", 
       "subtitle": "story/subtt/tt0167260.srt", 
-      "dvs": "story/dvs/tt0167260.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0167260.script"
     }, 
     "imdb_key": "tt0167260", 
@@ -4336,7 +4336,7 @@
     "text": {
       "plot": "story/plot/tt0167404.wiki", 
       "subtitle": "story/subtt/tt0167404.srt", 
-      "dvs": "story/dvs/tt0167404.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0167404.script"
     }, 
     "imdb_key": "tt0167404", 
@@ -4372,7 +4372,7 @@
     "text": {
       "plot": "story/plot/tt1142988.wiki", 
       "subtitle": "story/subtt/tt1142988.srt", 
-      "dvs": "story/dvs/tt1142988.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1142988.script"
     }, 
     "imdb_key": "tt1142988", 
@@ -4456,7 +4456,7 @@
     "text": {
       "plot": "story/plot/tt1758830.wiki", 
       "subtitle": "story/subtt/tt1758830.srt", 
-      "dvs": "story/dvs/tt1758830.dvs", 
+      "dvs": null, 
       "script": null
     }, 
     "imdb_key": "tt1758830", 
@@ -4504,7 +4504,7 @@
     "text": {
       "plot": "story/plot/tt0120338.wiki", 
       "subtitle": "story/subtt/tt0120338.srt", 
-      "dvs": "story/dvs/tt0120338.dvs", 
+      "dvs": null, 
       "script": "story/script/tt0120338.script"
     }, 
     "imdb_key": "tt0120338", 
@@ -4636,7 +4636,7 @@
     "text": {
       "plot": "story/plot/tt1193138.wiki", 
       "subtitle": "story/subtt/tt1193138.srt", 
-      "dvs": "story/dvs/tt1193138.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1193138.script"
     }, 
     "imdb_key": "tt1193138", 
@@ -4852,7 +4852,7 @@
     "text": {
       "plot": "story/plot/tt1068680.wiki", 
       "subtitle": "story/subtt/tt1068680.srt", 
-      "dvs": "story/dvs/tt1068680.dvs", 
+      "dvs": null, 
       "script": "story/script/tt1068680.script"
     }, 
     "imdb_key": "tt1068680", 
