@@ -31,7 +31,7 @@ QAs are stored as a standard Python list
 To get train or test splits of the QA along with a particular story, use  
 <code>story, qa = mqa.get_story_qa_data('train', 'plot')</code>
 
-Currently supported story forms are: <code>plot, subtitle, script</code>
+Currently supported story forms are: <code>plot, split plot</code>
 
 ----
 
