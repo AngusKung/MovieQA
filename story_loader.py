@@ -86,14 +86,6 @@ class StoryLoader(object):
 
         return dvs_text
 
-    def _read_script(self, script_filename):
-        """Read a script (parsed) file.
-        """
-        with open(script_filename) as fid:
-            script = fid.readlines()
-        script = [l.strip() for l in script if l.strip() != '']
-        return script
-
     def load_story(self, movies_map, story_type='plot'):
         """Load story files for given set of movies.
 
@@ -146,7 +138,7 @@ class StoryLoader(object):
                 script_filename = os.path.join(PKG, movie.text.script)
                 if not self._check_exists(script_filename):
                     continue
-                this_story = self._read_subtitle(script_filename)
+                this_story = self._read_plot(script_filename)
 
             else:
                 raise ValueError('Unsupported story type!')
