@@ -107,7 +107,7 @@ class DataLoader(object):
         """Provide data based on a particular split and story-type.
 
         Args:
-          split:        'train' OR 'test'.
+          split:        'train' OR 'test' OR 'full'
           story_type:   'plot', 'subtitle', 'dvs', 'script'.
 
         Returns:
@@ -122,6 +122,9 @@ class DataLoader(object):
             this_split_movies = self.data_split['train']
         elif split == 'test':
             this_split_movies = self.data_split['test']
+        elif split == 'full':
+            this_split_movies = self.data_split['train']
+            this_split_movies.extend(self.data_split['test'])
         else:
             raise ValueError('Invalid split type. Use "train" or "test"')
 
