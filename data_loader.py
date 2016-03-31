@@ -21,7 +21,7 @@ TextSource = namedtuple('TextSource', 'plot dvs subtitle script')
 MovieInfo = namedtuple('Movie', 'name year genre text video')
 
 QAInfo = namedtuple('QAInfo',
-                    'question answers correct_index imdb_key video_clips')
+                    'qid question answers correct_index imdb_key video_clips')
 
 class DataLoader(object):
     """MovieQA: Data loader class"""
@@ -63,7 +63,7 @@ class DataLoader(object):
 
         for qa in qa_json:
             self.qa_list.append(
-                QAInfo(qa['question'], qa['answers'], qa['correct_index'],
+                QAInfo(qa['qid'], qa['question'], qa['answers'], qa['correct_index'],
                        qa['imdb_key'], qa['video_clips']))
 
     def _populate_splits(self):
