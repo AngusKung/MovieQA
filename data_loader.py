@@ -123,7 +123,7 @@ class DataLoader(object):
         elif split == 'test':
             this_split_movies = self.data_split['test']
         elif split == 'full':
-            this_split_movies = self.data_split['train']
+            this_split_movies = list(self.data_split['train'])
             this_split_movies.extend(self.data_split['test'])
         else:
             raise ValueError('Invalid split type. Use "train" or "test"')
