@@ -183,7 +183,7 @@ class DataLoader(object):
                 if qa_one.imdb_key in video_list.keys():
                     video_list[qa_one.imdb_key].extend(qa_one.video_clips)
                 else:
-                    video_list.update({qa_one.imdb_key:qa_one.video_clips})
+                    video_list.update({qa_one.imdb_key:list(qa_one.video_clips)})
 
             # keep non-repeated clips
             for imdb_key in video_list.keys():
