@@ -101,6 +101,7 @@ class StoryLoader(object):
         """
         story = {}
         for imdb_key, movie in movies_map.iteritems():
+            print movie
             if story_type == 'plot':
                 if not movie.text.plot:
                     continue
