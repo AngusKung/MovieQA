@@ -6,9 +6,11 @@ from gensim.models import Word2Vec
 from itertools import permutations
 import sys
 
-
 sys.path.append('/home/MLDickS/MovieQA_benchmark/.')
+from parse import mk_newgru300
 from data_loader import DataLoader
+from mybiGRU import findMaxlen
+from keras.preprocessing.sequence import pad_sequences
 
 pickBestNum = 3
 cosinSim = 0.75
@@ -17,9 +19,9 @@ split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 wordvec_file = '../GloVe/glove.6B.300d.txt'
-#dataPickle_name = "../Memmap/"+str(split)+"."+str(story_type)+".lstm.memmap"
-dataPickle_name = "../Pickle/"+str(split)+"."+str(story_type)+".sen="+str(pickBestNum)+".lstm.pickle.best4"
-print "Saving to : ",dataPickle_name
+dataPickle_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.dict.pickle"
+dataMemmap_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.memmap"
+dataMemmap_name2 = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.ans.memmap"
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -90,18 +92,23 @@ def wordToVec(entry):
 		tempList.append(temp_vector)
 	    except:
 		print word
-    return tempList
+    if tempList:
+	return tempList
+    else:
+        return [np.zeros(300,dtype='float32')]
 
 print "Loading word2vec..."
 word_vec = Word2Vec.load_word2vec_format(wordvec_file, binary=False)
 
+numDict = dict()
 data = []
-maxlen = 0 
-maxlen_pass = 0
-maxlen_ques = 0
+answ = []
+combined_data = []
+idxCounter = 0
+lastNum = 0
 for aQ in qa:
     #pdb.set_trace()
-    #print aQ[0]
+    print aQ[0]
     oneQ = []
     que_wordList = wordToVec(str(aQ[1]))
     que_averageList = np.mean( np.asarray(que_wordList,dtype='float32'), axis=0 )
@@ -131,37 +138,64 @@ for aQ in qa:
 	sen_cosinSim.pop(idx)
 	sen_wordList.pop(idx)
 	num+=1
-    oneQ.append(sen_chosenWords)
-    oneQ.append(que_wordList)
-    oneQ.append(ans1)
-    oneQ.append(ans2)
-    oneQ.append(ans3)
-    oneQ.append(ans4)
-    oneQ.append(ans5)
+    oneQ.append(np.vstack(sen_chosenWords))
+    oneQ.append(np.vstack(que_wordList))
+    oneQ.append(np.vstack(ans1))
+    oneQ.append(np.vstack(ans2))
+    oneQ.append(np.vstack(ans3))
+    oneQ.append(np.vstack(ans4))
+    oneQ.append(np.vstack(ans5))
     ansC = np.zeros((5,),dtype='float32')
     ansC[aQ[3]] += 1.
-    data.append([oneQ,ansC])
-    if len(sen_chosenWords) > maxlen_pass:
-        maxlen_pass = len(sen_chosenWords)
-    if max(len(ans1),len(ans2),len(ans3),len(ans4),len(ans5)) > maxlen: 
-        maxlen =  max(len(ans1),len(ans2),len(ans3),len(ans4),len(ans5))
-    if len(que_wordList) > maxlen_ques:
-        maxlen_ques = len(que_wordList)
+    answ.append(ansC)
+    #data.append(np.vstack(oneQ))
+    combined_data.append([oneQ,ansC])
+    numDict[str(idxCounter)] = [lastNum,lastNum+len(sen_chosenWords),lastNum+len(sen_chosenWords)+len(que_wordList),
+		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1),
+		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2),
+		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3),
+		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4),
+		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4)+len(ans5)]
+    lastNum += len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4)+len(ans5)
+    idxCounter += 1
+
 
 print "Pickling to ...",dataPickle_name
-pdb.set_trace()
+#pdb.set_trace()
 print "pickling..."
 fh =open(dataPickle_name,'wb')
-pickle.dump(len(data),fh,pickle.HIGHEST_PROTOCOL)
-pickle.dump(maxlen_pass,fh,pickle.HIGHEST_PROTOCOL)
-pickle.dump(maxlen_ques,fh,pickle.HIGHEST_PROTOCOL)
-pickle.dump(maxlen,fh,pickle.HIGHEST_PROTOCOL)
-pickle.dump(data,fh,pickle.HIGHEST_PROTOCOL)
+pickle.dump(numDict,fh,pickle.HIGHEST_PROTOCOL)
 fh.close()
-'''
-print "Memmap to ...",dataPickle_name
+
 pdb.set_trace()
+passages, questions, A1, A2, A3, A4, A5, true_ans = mk_newgru300(combined_data)
+
+maxlen = findMaxlen(A1)
+maxlen = findMaxlen(A2,maxlen)
+maxlen = findMaxlen(A3,maxlen)
+maxlen = findMaxlen(A4,maxlen)
+maxlen = findMaxlen(A5,maxlen)
+maxlen = findMaxlen(questions,maxlen)
+print "MAX_len A&Q  : "+str(maxlen)
+maxlen_pass = findMaxlen(passages)
+print "MAX_len pass : "+str(maxlen_pass)
+
+passages = pad_sequences(passages, maxlen=maxlen_pass, dtype='float32')
+questions = pad_sequences(questions, maxlen=maxlen, dtype='float32')
+A1 = pad_sequences(A1, maxlen=maxlen, dtype='float32')
+A2 = pad_sequences(A2, maxlen=maxlen, dtype='float32')
+A3 = pad_sequences(A3, maxlen=maxlen, dtype='float32')
+A4 = pad_sequences(A4, maxlen=maxlen, dtype='float32')
+A5 = pad_sequences(A5, maxlen=maxlen, dtype='float32')
+
+mem_ans = np.vstack(answ)
+pdb.set_trace()
+mem_data = np.vstack([single for single in zip([passages,questions,A1,A2,A3,A4,A5])])
+print "Memmap to ...",dataMemmap_name
+#pdb.set_trace()
 print "memmapping..."
-fp = np.memmap(dataPickle_name, dtype='float32', mode='w+', shape=(len(data),4))
-fp = np.asarray(data,dtype='float32')
-'''
+fp = np.memmap(dataMemmap_name, dtype='float32', mode='w+', shape=mem_data.shape)
+fp = mem_data
+
+fp2 = np.memmap(dataMemmap_name2, dtype='float32', mode='w+', shape=mem_ans.shape)
+fp2 = mem_ans
