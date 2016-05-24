@@ -18,7 +18,7 @@ story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 wordvec_file = '../GloVe/glove.6B.300d.txt'
 #dataPickle_name = "../Memmap/"+str(split)+"."+str(story_type)+".lstm.memmap"
-dataPickle_name = "../Pickle/"+str(split)+"."+str(story_type)+".sen="+str(pickBestNum)+".lstm.pickle.best4"
+dataPickle_name = "../Pickle/"+str(split)+"."+str(story_type)+".best="+str(pickBestNum)+".pruned=300.lstm.pickle"
 print "Saving to : ",dataPickle_name
 
 DL = DataLoader()
@@ -99,7 +99,7 @@ data = []
 maxlen = 0 
 maxlen_pass = 0
 maxlen_ques = 0
-for aQ in qa:
+for aQ in qa[0:300]:
     #pdb.set_trace()
     #print aQ[0]
     oneQ = []

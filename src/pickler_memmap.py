@@ -19,9 +19,6 @@ split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 wordvec_file = '../GloVe/glove.6B.300d.txt'
-dataPickle_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.dict.pickle"
-dataMemmap_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.memmap"
-dataMemmap_name2 = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.ans.memmap"
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -100,10 +97,17 @@ def wordToVec(entry):
 print "Loading word2vec..."
 word_vec = Word2Vec.load_word2vec_format(wordvec_file, binary=False)
 
+passages = []
+questions = []
+A1 = []
+A2 = []
+A3 = []
+A4 = []
+A5 = []
+
 numDict = dict()
 data = []
 answ = []
-combined_data = []
 idxCounter = 0
 lastNum = 0
 for aQ in qa:
@@ -138,37 +142,41 @@ for aQ in qa:
 	sen_cosinSim.pop(idx)
 	sen_wordList.pop(idx)
 	num+=1
-    oneQ.append(np.vstack(sen_chosenWords))
+    '''oneQ.append(np.vstack(sen_chosenWords))
     oneQ.append(np.vstack(que_wordList))
     oneQ.append(np.vstack(ans1))
     oneQ.append(np.vstack(ans2))
     oneQ.append(np.vstack(ans3))
     oneQ.append(np.vstack(ans4))
-    oneQ.append(np.vstack(ans5))
+    oneQ.append(np.vstack(ans5))'''
+    passages.append(sen_chosenWords)
+    questions.append(que_wordList)
+    A1.append(ans1)
+    A2.append(ans2)
+    A3.append(ans3)
+    A4.append(ans4)
+    A5.append(ans5)
     ansC = np.zeros((5,),dtype='float32')
     ansC[aQ[3]] += 1.
     answ.append(ansC)
     #data.append(np.vstack(oneQ))
-    combined_data.append([oneQ,ansC])
-    numDict[str(idxCounter)] = [lastNum,lastNum+len(sen_chosenWords),lastNum+len(sen_chosenWords)+len(que_wordList),
+    '''numDict[str(idxCounter)] = [lastNum,lastNum+len(sen_chosenWords),lastNum+len(sen_chosenWords)+len(que_wordList),
 		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1),
 		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2),
 		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3),
 		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4),
 		    lastNum+len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4)+len(ans5)]
-    lastNum += len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4)+len(ans5)
+    lastNum += len(sen_chosenWords)+len(que_wordList)+len(ans1)+len(ans2)+len(ans3)+len(ans4)+len(ans5)'''
     idxCounter += 1
 
 
-print "Pickling to ...",dataPickle_name
+'''print "Pickling to ...",dataPickle_name
 #pdb.set_trace()
 print "pickling..."
 fh =open(dataPickle_name,'wb')
 pickle.dump(numDict,fh,pickle.HIGHEST_PROTOCOL)
-fh.close()
+fh.close()'''
 
-pdb.set_trace()
-passages, questions, A1, A2, A3, A4, A5, true_ans = mk_newgru300(combined_data)
 
 maxlen = findMaxlen(A1)
 maxlen = findMaxlen(A2,maxlen)
@@ -180,6 +188,7 @@ print "MAX_len A&Q  : "+str(maxlen)
 maxlen_pass = findMaxlen(passages)
 print "MAX_len pass : "+str(maxlen_pass)
 
+print "Start padding..."
 passages = pad_sequences(passages, maxlen=maxlen_pass, dtype='float32')
 questions = pad_sequences(questions, maxlen=maxlen, dtype='float32')
 A1 = pad_sequences(A1, maxlen=maxlen, dtype='float32')
@@ -187,15 +196,36 @@ A2 = pad_sequences(A2, maxlen=maxlen, dtype='float32')
 A3 = pad_sequences(A3, maxlen=maxlen, dtype='float32')
 A4 = pad_sequences(A4, maxlen=maxlen, dtype='float32')
 A5 = pad_sequences(A5, maxlen=maxlen, dtype='float32')
-
+print "Start vstacking..."
 mem_ans = np.vstack(answ)
-pdb.set_trace()
-mem_data = np.vstack([single for single in zip([passages,questions,A1,A2,A3,A4,A5])])
+numDict['maxlen']=maxlen
+numDict['maxlen_pass']=maxlen_pass
+numDict['totalQ']=len(passages)
+singleQ = maxlen_pass + 6*maxlen
+
+dataMemmap_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".memmap:"+str( (singleQ*len(passages),300) )
+dataMemmap_name2 = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.ans.Q="+str(len(A5))+".5."+".memmap:"+str( (len(passages),5) )
 print "Memmap to ...",dataMemmap_name
 #pdb.set_trace()
 print "memmapping..."
-fp = np.memmap(dataMemmap_name, dtype='float32', mode='w+', shape=mem_data.shape)
-fp = mem_data
+fp = np.memmap(dataMemmap_name, dtype='float32', mode='w+', shape=(singleQ*len(passages),300))
 
-fp2 = np.memmap(dataMemmap_name2, dtype='float32', mode='w+', shape=mem_ans.shape)
-fp2 = mem_ans
+fp2 = np.memmap(dataMemmap_name2, dtype='float32', mode='w+', shape=(len(passages),5))
+fp2[:,:] = mem_ans[:,:]
+#pdb.set_trace()
+
+mem_data = np.vstack([ np.vstack(passages[0]),np.vstack(questions[0]),np.vstack(A1[0]),np.vstack(A2[0]),np.vstack(A3[0]),np.vstack(A4[0]),np.vstack(A5[0]) ])
+for i in range(0,len(passages)):
+    mem_data = np.vstack([np.vstack(passages[i]),np.vstack(questions[i]),np.vstack(A1[i]),np.vstack(A2[i]),np.vstack(A3[i]),np.vstack(A4[i]),np.vstack(A5[i]) ])
+    fp[i*singleQ:(i+1)*singleQ,:] = mem_data
+    if i%50==0:
+	print i
+        pdb.set_trace()
+del passages
+del questions
+del A1
+del A2
+del A3
+del A4
+del A5
+

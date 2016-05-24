@@ -2,6 +2,7 @@ import argparse
 import numpy as np
 import sys
 import cPickle
+import pdb
 
 """my .py file"""
 from parse import mk_newgru300, save_3d_array, load_3d_array, save_2d_array, load_2d_array
@@ -90,6 +91,7 @@ for e in range(args.epochs):
 		end = start+step
 		if end > total_data:
 			end = total_data
+		pdb.set_trace()
 		model.fit(
 			{'ques_input':questions[start:end], 'pass_input':passages[start:end], 'A1_input':A1[start:end], 'A2_input':A2[start:end], 'A3_input':A3[start:end], 'A4_input':A4[start:end], 'A5_input':A5[start:end]},
 			{'final_out':true_ans[start:end]},
