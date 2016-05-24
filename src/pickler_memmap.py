@@ -15,7 +15,7 @@ from keras.preprocessing.sequence import pad_sequences
 pickBestNum = 3
 cosinSim = 0.75
 
-split = 'val' #'train' OR 'val' OR 'test' OR 'full'
+split = 'train' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 wordvec_file = '../GloVe/glove.6B.300d.txt'
@@ -187,6 +187,8 @@ maxlen = findMaxlen(questions,maxlen)
 print "MAX_len A&Q  : "+str(maxlen)
 maxlen_pass = findMaxlen(passages)
 print "MAX_len pass : "+str(maxlen_pass)
+Qnum = len(passages)
+print "Qnum : "+str(Qnum)
 
 print "Start padding..."
 passages = pad_sequences(passages, maxlen=maxlen_pass, dtype='float32')
@@ -198,24 +200,46 @@ A4 = pad_sequences(A4, maxlen=maxlen, dtype='float32')
 A5 = pad_sequences(A5, maxlen=maxlen, dtype='float32')
 print "Start vstacking..."
 mem_ans = np.vstack(answ)
-numDict['maxlen']=maxlen
-numDict['maxlen_pass']=maxlen_pass
-numDict['totalQ']=len(passages)
-singleQ = maxlen_pass + 6*maxlen
 
-dataMemmap_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".memmap:"+str( (singleQ*len(passages),300) )
-dataMemmap_name2 = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".lstm.ans.Q="+str(len(A5))+".5."+".memmap:"+str( (len(passages),5) )
-print "Memmap to ...",dataMemmap_name
+path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
+passMemmap_name = path_name+"pass.memmap"
+queMemmap_name = path_name+"que.memmap"
+A1Memmap_name = path_name+"A1.memmap"
+A2Memmap_name = path_name+"A2.memmap"
+A3Memmap_name = path_name+"A3.memmap"
+A4Memmap_name = path_name+"A4.memmap"
+A5Memmap_name = path_name+"A5.memmap"
+ansMemmap_name = path_name+"ans.memmap"
+print "Memmap to ...",path_name
 #pdb.set_trace()
 print "memmapping..."
-fp = np.memmap(dataMemmap_name, dtype='float32', mode='w+', shape=(singleQ*len(passages),300))
+pass_fp = np.memmap(passMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen_pass,300))
+pass_fp = np.dstack(passages).reshape(Qnum,maxlen_pass,300)
 
-fp2 = np.memmap(dataMemmap_name2, dtype='float32', mode='w+', shape=(len(passages),5))
+que_fp = np.memmap(queMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+que_fp = np.dstack(questions).reshape(Qnum,maxlen,300)
+
+A1_fp = np.memmap(A1Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A1_fp = np.dstack(A1).reshape(Qnum,maxlen,300)
+
+A2_fp = np.memmap(A2Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A2_fp = np.dstack(A2).reshape(Qnum,maxlen,300)
+
+A3_fp = np.memmap(A3Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A3_fp = np.dstack(A3).reshape(Qnum,maxlen,300)
+
+A4_fp = np.memmap(A4Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A4_fp = np.dstack(A4).reshape(Qnum,maxlen,300)
+
+A5_fp = np.memmap(A5Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A5_fp = np.dstack(A5).reshape(Qnum,maxlen,300)
+
+fp2 = np.memmap(ansMemmap_name, dtype='float32', mode='w+', shape=(len(passages),5))
 fp2[:,:] = mem_ans[:,:]
-#pdb.set_trace()
+pdb.set_trace()
 
-mem_data = np.vstack([ np.vstack(passages[0]),np.vstack(questions[0]),np.vstack(A1[0]),np.vstack(A2[0]),np.vstack(A3[0]),np.vstack(A4[0]),np.vstack(A5[0]) ])
-for i in range(0,len(passages)):
+'''for i in range(0,len(passages)):
+    pass_fp[i] = passages[i]
     mem_data = np.vstack([np.vstack(passages[i]),np.vstack(questions[i]),np.vstack(A1[i]),np.vstack(A2[i]),np.vstack(A3[i]),np.vstack(A4[i]),np.vstack(A5[i]) ])
     fp[i*singleQ:(i+1)*singleQ,:] = mem_data
     if i%50==0:
@@ -228,4 +252,4 @@ del A2
 del A3
 del A4
 del A5
-
+'''
