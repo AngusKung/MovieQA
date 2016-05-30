@@ -18,7 +18,9 @@ cosinSim = 0.75
 split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
-wordvec_file = '../GloVe/glove.6B.300d.txt'
+#wordvec_file = '../GloVe/glove.6B.300d.txt'
+wordvec_file = '../GloVe/glove.6B.100d.txt'
+dim_glove = 100
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -26,8 +28,8 @@ story,qa = DL.get_story_qa_data(split,story_type)
 def wordToVec(entry):
     tempList = []
     for i in range(1): #null loop, just for the right indent
-	temp_vector = np.zeros(300,dtype='float32')
-	for word in entry:
+	temp_vector = np.zeros(dim_glove,dtype='float32')
+	for word in entry.split():
 	    word = word.lower()
 	    if word not in word_vec:
 		if '\'s' in word:
@@ -41,19 +43,29 @@ def wordToVec(entry):
 		elif 'i\'m' in word:
 		    temp_vector = np.asarray(word_vec['i'])
 		    word = 'am'
-		elif '\'ll' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		    word = 'will'
-		elif '\'ve' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		    word = 'have'
-		elif '\'re' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		    word = 'are'
+		#elif '\'ll' in word:
+		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
+		#    word = 'will'
+		#elif '\'ve' in word:
+		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
+		#    word = 'have'
+		#elif '\'re' in word:
+		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
+		#    word = 'are'
 		elif '(' in word:
 		    word = word.split('(')[1]
 		elif ')' in word:
 		    word = word.split(')')[0]
+		elif ',' in word:
+		    word = word.split(',')[0]
+		elif '?' in word:
+		    word = word.split('?')[0]
+		elif '"'  in word:
+		    for oneword in word.split('"'):
+			if oneword and oneword in word_vec:
+			    temp_vector = np.asarray(word_vec[oneword])
+			    tempList.append(temp_vector)
+		    continue
 		elif '.'  in word:
 		    for oneword in word.split('.'):
 			if oneword and oneword in word_vec:
@@ -92,7 +104,7 @@ def wordToVec(entry):
     if tempList:
 	return tempList
     else:
-        return [np.zeros(300,dtype='float32')]
+        return [np.zeros(dim_glove,dtype='float32')]
 
 print "Loading word2vec..."
 word_vec = Word2Vec.load_word2vec_format(wordvec_file, binary=False)
@@ -201,7 +213,7 @@ A5 = pad_sequences(A5, maxlen=maxlen, dtype='float32')
 print "Start vstacking..."
 mem_ans = np.vstack(answ)
 
-path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+".mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
+path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+"."+str(dim_glove)+"d.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
 passMemmap_name = path_name+"pass.memmap"
 queMemmap_name = path_name+"que.memmap"
 A1Memmap_name = path_name+"A1.memmap"
@@ -213,25 +225,25 @@ ansMemmap_name = path_name+"ans.memmap"
 print "Memmap to ...",path_name
 #pdb.set_trace()
 print "memmapping..."
-pass_fp = np.memmap(passMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen_pass,300))
+pass_fp = np.memmap(passMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen_pass,dim_glove))
 pass_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(passages),1,2),0,1)[:,:,:]
 
-que_fp = np.memmap(queMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+que_fp = np.memmap(queMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 que_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(questions),1,2),0,1)[:,:,:]
 
-A1_fp = np.memmap(A1Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A1_fp = np.memmap(A1Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 A1_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A1),1,2),0,1)[:,:,:]
 
-A2_fp = np.memmap(A2Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A2_fp = np.memmap(A2Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 A2_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A2),1,2),0,1)[:,:,:]
 
-A3_fp = np.memmap(A3Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A3_fp = np.memmap(A3Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 A3_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A3),1,2),0,1)[:,:,:]
 
-A4_fp = np.memmap(A4Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A4_fp = np.memmap(A4Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 A4_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A4),1,2),0,1)[:,:,:]
 
-A5_fp = np.memmap(A5Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
+A5_fp = np.memmap(A5Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,dim_glove))
 A5_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A5),1,2),0,1)[:,:,:]
 
 fp2 = np.memmap(ansMemmap_name, dtype='float32', mode='w+', shape=(len(passages),5))

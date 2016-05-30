@@ -33,7 +33,7 @@ args = parser.parse_args()
 print "Running with args:"
 print args
 
-dim_glove = 300
+dim_glove = 100
 #path = './Pickle/val.plot.lstm.pickle'
 
 
@@ -53,8 +53,8 @@ maxlen_pass = np.shape(passages)[1]
 maxlen = np.shape(A1)[0]
 '''
 Qnum = 1958
-maxlen = 123
-maxlen_pass = 3643
+maxlen = 32
+maxlen_pass = 995
 
 path_name = args.path
 passMemmap_name = path_name+"pass.memmap"
@@ -66,13 +66,13 @@ A4Memmap_name = path_name+"A4.memmap"
 A5Memmap_name = path_name+"A5.memmap"
 ansMemmap_name = path_name+"ans.memmap"
 
-passages = np.memmap(passMemmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen_pass,300))
-questions = np.memmap(queMemmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-A1 = np.memmap(A1Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-A2 = np.memmap(A2Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-A3 = np.memmap(A3Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-A4 = np.memmap(A4Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
+passages = np.memmap(passMemmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen_pass,dim_glove))
+questions = np.memmap(queMemmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
+A1 = np.memmap(A1Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
+A2 = np.memmap(A2Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
+A3 = np.memmap(A3Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
+A4 = np.memmap(A4Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
+A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
 true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
 model = twoGRUmodel(args, maxlen, maxlen_pass, dim_glove)
