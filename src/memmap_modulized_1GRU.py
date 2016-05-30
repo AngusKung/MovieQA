@@ -73,10 +73,10 @@ A2 = np.memmap(A2Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300
 A3 = np.memmap(A3Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
 A4 = np.memmap(A4Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
 A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,300))
-true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(len(passages),5))
+true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
 model = twoGRUmodel(args, maxlen, maxlen_pass, dim_glove)
-
+#pdb.set_trace()
 print "Training started..."
 model.fit(
 	{'ques_input':questions, 'pass_input':passages, 'A1_input':A1, 'A2_input':A2, 'A3_input':A3, 'A4_input':A4, 'A5_input':A5},

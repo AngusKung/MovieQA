@@ -12,10 +12,10 @@ from data_loader import DataLoader
 from mybiGRU import findMaxlen
 from keras.preprocessing.sequence import pad_sequences
 
-pickBestNum = 3
+pickBestNum = 5
 cosinSim = 0.75
 
-split = 'train' #'train' OR 'val' OR 'test' OR 'full'
+split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 wordvec_file = '../GloVe/glove.6B.300d.txt'
@@ -214,25 +214,25 @@ print "Memmap to ...",path_name
 #pdb.set_trace()
 print "memmapping..."
 pass_fp = np.memmap(passMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen_pass,300))
-pass_fp = np.dstack(passages).reshape(Qnum,maxlen_pass,300)
+pass_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(passages),1,2),0,1)[:,:,:]
 
 que_fp = np.memmap(queMemmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-que_fp = np.dstack(questions).reshape(Qnum,maxlen,300)
+que_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(questions),1,2),0,1)[:,:,:]
 
 A1_fp = np.memmap(A1Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-A1_fp = np.dstack(A1).reshape(Qnum,maxlen,300)
+A1_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A1),1,2),0,1)[:,:,:]
 
 A2_fp = np.memmap(A2Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-A2_fp = np.dstack(A2).reshape(Qnum,maxlen,300)
+A2_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A2),1,2),0,1)[:,:,:]
 
 A3_fp = np.memmap(A3Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-A3_fp = np.dstack(A3).reshape(Qnum,maxlen,300)
+A3_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A3),1,2),0,1)[:,:,:]
 
 A4_fp = np.memmap(A4Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-A4_fp = np.dstack(A4).reshape(Qnum,maxlen,300)
+A4_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A4),1,2),0,1)[:,:,:]
 
 A5_fp = np.memmap(A5Memmap_name, dtype='float32', mode='w+', shape=(Qnum,maxlen,300))
-A5_fp = np.dstack(A5).reshape(Qnum,maxlen,300)
+A5_fp[:,:,:] = np.swapaxes(np.swapaxes(np.dstack(A5),1,2),0,1)[:,:,:]
 
 fp2 = np.memmap(ansMemmap_name, dtype='float32', mode='w+', shape=(len(passages),5))
 fp2[:,:] = mem_ans[:,:]
