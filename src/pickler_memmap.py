@@ -5,6 +5,7 @@ import cPickle as pickle
 from gensim.models import Word2Vec
 from itertools import permutations
 import sys
+import os
 
 sys.path.append('/home/MLDickS/MovieQA_benchmark/.')
 from parse import mk_newgru300
@@ -15,12 +16,12 @@ from keras.preprocessing.sequence import pad_sequences
 pickBestNum = 5
 cosinSim = 0.75
 
-split = 'val' #'train' OR 'val' OR 'test' OR 'full'
+split = 'train' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 #wordvec_file = '../GloVe/glove.6B.300d.txt'
-wordvec_file = '../GloVe/glove.6B.100d.txt'
-dim_glove = 100
+wordvec_file = '../GloVe/glove.6B.300d.txt'
+dim_glove = 300
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -32,26 +33,41 @@ def wordToVec(entry):
 	for word in entry.split():
 	    word = word.lower()
 	    if word not in word_vec:
+		if word.startswith('"') and word.endswith('"'):
+    		    word = word[1:-1]
+		elif word.startswith('"'):
+    		    word = word[1:]
+		elif word.endswith('"'):
+    		    word = word[:-1]
+		elif',' in word:
+		    word.replace(',','')
+
+
 		if '\'s' in word:
-		    word = word.split('\'')[0]
+		    word = word.split('\'s')[0]
 		elif 'n\'t' in word:
-		    temp_vector = np.asarray(word_vec[word.split('n')[0]])
+		    temp_vector = np.asarray(word_vec[word.split('n\'t')[0]])
+		    tempList.append(temp_vector)
 		    word = 'not'
-		elif '\'d' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		    word = 'would'
+		#elif '\'d' in word:
+		#    temp_vector = np.asarray(word_vec[word.split('\'d')[0]])
+		#    word = 'would'
 		elif 'i\'m' in word:
 		    temp_vector = np.asarray(word_vec['i'])
+		    tempList.append(temp_vector)
 		    word = 'am'
-		#elif '\'ll' in word:
-		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		#    word = 'will'
-		#elif '\'ve' in word:
-		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		#    word = 'have'
-		#elif '\'re' in word:
-		#    temp_vector = np.asarray(word_vec[word.split('\'')[0]])
-		#    word = 'are'
+		elif '\'ll' in word:
+		    temp_vector = np.asarray(word_vec[word.split('\'ll')[0]])
+		    tempList.append(temp_vector)
+		    word = 'will'
+		elif '\'ve' in word:
+		    temp_vector = np.asarray(word_vec[word.split('\'ve')[0]])
+		    tempList.append(temp_vector)
+		    word = 'have'
+		elif 'you\'re' in word:
+		    temp_vector = np.asarray(word_vec['you'])
+		    tempList.append(temp_vector)
+		    word = 'are'
 		elif '(' in word:
 		    word = word.split('(')[1]
 		elif ')' in word:
@@ -202,6 +218,10 @@ print "MAX_len pass : "+str(maxlen_pass)
 Qnum = len(passages)
 print "Qnum : "+str(Qnum)
 
+path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+"."+str(dim_glove)+"d.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
+if not os.path.exists(path_name):
+    os.makedirs(path_name)
+
 print "Start padding..."
 passages = pad_sequences(passages, maxlen=maxlen_pass, dtype='float32')
 questions = pad_sequences(questions, maxlen=maxlen, dtype='float32')
@@ -213,7 +233,6 @@ A5 = pad_sequences(A5, maxlen=maxlen, dtype='float32')
 print "Start vstacking..."
 mem_ans = np.vstack(answ)
 
-path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+"."+str(dim_glove)+"d.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
 passMemmap_name = path_name+"pass.memmap"
 queMemmap_name = path_name+"que.memmap"
 A1Memmap_name = path_name+"A1.memmap"
