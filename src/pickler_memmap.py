@@ -16,12 +16,12 @@ from keras.preprocessing.sequence import pad_sequences
 pickBestNum = 5
 cosinSim = 0.75
 
-split = 'train' #'train' OR 'val' OR 'test' OR 'full'
+split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 #wordvec_file = '../GloVe/glove.6B.300d.txt'
-wordvec_file = '../GloVe/glove.6B.300d.txt'
-dim_glove = 300
+wordvec_file = '../GloVe/glove.6B.100d.txt'
+dim_glove = 100
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -206,14 +206,16 @@ pickle.dump(numDict,fh,pickle.HIGHEST_PROTOCOL)
 fh.close()'''
 
 
-maxlen = findMaxlen(A1)
+'''maxlen = findMaxlen(A1)
 maxlen = findMaxlen(A2,maxlen)
 maxlen = findMaxlen(A3,maxlen)
 maxlen = findMaxlen(A4,maxlen)
 maxlen = findMaxlen(A5,maxlen)
-maxlen = findMaxlen(questions,maxlen)
+maxlen = findMaxlen(questions,maxlen)'''
+maxlen = 32
 print "MAX_len A&Q  : "+str(maxlen)
-maxlen_pass = findMaxlen(passages)
+#maxlen_pass = findMaxlen(passages)
+maxlen_pass = 1346
 print "MAX_len pass : "+str(maxlen_pass)
 Qnum = len(passages)
 print "Qnum : "+str(Qnum)
