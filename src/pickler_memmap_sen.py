@@ -13,15 +13,15 @@ from data_loader import DataLoader
 from mybiGRU import findMaxlen
 from keras.preprocessing.sequence import pad_sequences
 
-pickBestNum = 5
-cosinSim = 0.75
+#pickBestNum = 5
+#cosinSim = 0.75
 
-split = 'val' #'train' OR 'val' OR 'test' OR 'full'
+split = 'train' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 #wordvec_file = '../GloVe/glove.6B.300d.txt'
-wordvec_file = '../GloVe/glove.6B.100d.txt'
-dim_glove = 100
+wordvec_file = '../GloVe/glove.6B.300d.txt'
+dim_glove = 300
 
 DL = DataLoader()
 story,qa = DL.get_story_qa_data(split,story_type)
@@ -32,6 +32,7 @@ def wordToVec(entry):
 	temp_vector = np.zeros(dim_glove,dtype='float32')
 	#if len(entry.split()) > 200:
 	#    print entry.split()
+    	count = 0
 	for word in entry.split():
 	    word = word.lower()
 	    if word not in word_vec:
@@ -48,27 +49,27 @@ def wordToVec(entry):
 		if '\'s' in word:
 		    word = word.split('\'s')[0]
 		elif 'n\'t' in word:
-		    temp_vector = np.asarray(word_vec[word.split('n\'t')[0]])
-		    tempList.append(temp_vector)
+		    temp_vector = np.add(temp_vector,np.asarray(word_vec[word.split('n\'t')[0]]))
+		    count+=1    
 		    word = 'not'
 		#elif '\'d' in word:
 		#    temp_vector = np.asarray(word_vec[word.split('\'d')[0]])
 		#    word = 'would'
 		elif 'i\'m' in word:
-		    temp_vector = np.asarray(word_vec['i'])
-		    tempList.append(temp_vector)
+		    temp_vector = np.add(temp_vector,np.asarray(word_vec['i']))
+		    count+=1    
 		    word = 'am'
 		elif '\'ll' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'ll')[0]])
-		    tempList.append(temp_vector)
+		    temp_vector = np.add(temp_vector,np.asarray(word_vec[word.split('\'ll')[0]]))
+		    count+=1    
 		    word = 'will'
 		elif '\'ve' in word:
-		    temp_vector = np.asarray(word_vec[word.split('\'ve')[0]])
-		    tempList.append(temp_vector)
+		    temp_vector = np.add(temp_vector,np.asarray(word_vec[word.split('\'ve')[0]]))
+		    count+=1    
 		    word = 'have'
 		elif 'you\'re' in word:
-		    temp_vector = np.asarray(word_vec['you'])
-		    tempList.append(temp_vector)
+		    temp_vector = np.add(temp_vector,np.asarray(word_vec['you']))
+		    count+=1    
 		    word = 'are'
 		elif '(' in word:
 		    word = word.split('(')[1]
@@ -81,48 +82,48 @@ def wordToVec(entry):
 		elif '"'  in word:
 		    for oneword in word.split('"'):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 		elif '.'  in word:
 		    for oneword in word.split('.'):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 		elif ';' in word:
 		    for oneword in word.split(';'):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 		elif ':' in word:
 		    for oneword in word.split(':'):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 		elif '\'' in word:
 		    for oneword in word.split('\''):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 		elif '-'  in word:
 		    for oneword in word.split('-'):
 			if oneword and oneword in word_vec:
-			    temp_vector = np.asarray(word_vec[oneword])
-			    tempList.append(temp_vector)
+			    temp_vector = np.add(temp_vector,np.asarray(word_vec[oneword]))
+			    count+=1
 		    continue
 	    try:
 		temp_vector = np.add(temp_vector,np.asarray(word_vec[word]))
-		tempList.append(temp_vector)
+		count+=1
 	    except:
 		print word
-    if tempList:
-	return tempList
+    if count != 0:
+	return np.divide(temp_vector,count)
     else:
-        return [np.zeros(dim_glove,dtype='float32')]
+        return np.zeros(dim_glove,dtype='float32')
 
 print "Loading word2vec..."
 word_vec = Word2Vec.load_word2vec_format(wordvec_file, binary=False)
@@ -144,13 +145,13 @@ for aQ in qa:
     #pdb.set_trace()
     print aQ[0]
     oneQ = []
-    que_wordList = wordToVec(str(aQ[1]))
-    que_averageList = np.mean( np.asarray(que_wordList,dtype='float32'), axis=0 )
-    ans1 =wordToVec(str(aQ[2][0]))
-    ans2 =wordToVec(str(aQ[2][1]))
-    ans3 =wordToVec(str(aQ[2][2]))
-    ans4 =wordToVec(str(aQ[2][3]))
-    ans5 =wordToVec(str(aQ[2][4]))
+    que_wordList = wordToVec(str(aQ[1])).reshape((1,300))
+    #que_averageList = np.mean( np.asarray(que_wordList,dtype='float32'), axis=0 )
+    ans1 =wordToVec(str(aQ[2][0])).reshape((1,300))
+    ans2 =wordToVec(str(aQ[2][1])).reshape((1,300))
+    ans3 =wordToVec(str(aQ[2][2])).reshape((1,300))
+    ans4 =wordToVec(str(aQ[2][3])).reshape((1,300))
+    ans5 =wordToVec(str(aQ[2][4])).reshape((1,300))
     passage = story[aQ[4]]
     sen_wordList = []
     sen_cosinSim = []
@@ -159,12 +160,12 @@ for aQ in qa:
 	#if len(theList)>200:
 	#   pdb.set_trace()
 	sen_wordList.append(theList)
-	average_sen = np.mean( np.asarray(theList,dtype='float32'), axis=0 )
-	sen_cosinSim.append( np.dot(average_sen,que_averageList.T)/( math.sqrt(np.dot(average_sen,average_sen))*math.sqrt(np.dot(que_averageList,que_averageList)) )  )
+	#average_sen = np.mean( np.asarray(theList,dtype='float32'), axis=0 )
+	#sen_cosinSim.append( np.dot(average_sen,que_averageList.T)/( math.sqrt(np.dot(average_sen,average_sen))*math.sqrt(np.dot(que_averageList,que_averageList)) )  )
     sen_chosenWords = []
     num = 0
     #while sen_cosinSim:
-    while num<pickBestNum  and sen_cosinSim:
+    '''while num<pickBestNum  and sen_cosinSim:
 	#if max(sen_cosinSim) < cosinSim:
 	#    break
 	print max(sen_cosinSim)
@@ -174,14 +175,14 @@ for aQ in qa:
 	sen_cosinSim.pop(idx)
 	sen_wordList.pop(idx)
 	num+=1
-    '''oneQ.append(np.vstack(sen_chosenWords))
+    oneQ.append(np.vstack(sen_chosenWords))
     oneQ.append(np.vstack(que_wordList))
     oneQ.append(np.vstack(ans1))
     oneQ.append(np.vstack(ans2))
     oneQ.append(np.vstack(ans3))
     oneQ.append(np.vstack(ans4))
     oneQ.append(np.vstack(ans5))'''
-    passages.append(sen_chosenWords)
+    passages.append(np.vstack(sen_wordList))
     questions.append(que_wordList)
     A1.append(ans1)
     A2.append(ans2)
@@ -216,15 +217,16 @@ maxlen = findMaxlen(A3,maxlen)
 maxlen = findMaxlen(A4,maxlen)
 maxlen = findMaxlen(A5,maxlen)
 maxlen = findMaxlen(questions,maxlen)'''
-maxlen = 32
+maxlen = 1
 print "MAX_len A&Q  : "+str(maxlen)
-#maxlen_pass = findMaxlen(passages)
-maxlen_pass = 1346
+maxlen_pass = findMaxlen(passages)
 print "MAX_len pass : "+str(maxlen_pass)
 Qnum = len(passages)
 print "Qnum : "+str(Qnum)
 
-path_name = "../Memmap/"+str(split)+"."+str(story_type)+"."+str(pickBestNum)+"."+str(dim_glove)+"d.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
+pdb.set_trace()
+
+path_name = "../Memmap/"+str(split)+"."+str(story_type)+".SEN."+str(dim_glove)+"d.mp="+str(maxlen_pass)+".m="+str(maxlen)+".Q="+str(len(A5))+".lstm/"
 if not os.path.exists(path_name):
     os.makedirs(path_name)
 

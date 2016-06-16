@@ -59,6 +59,92 @@ def MQA_datagen(path,args,sta,end):
 	f.close()
 	#return valid_data
 
+def MemNN(args, maxlen, maxlen_pass, dim_glove):
+	dim_proj = 100
+
+	shared_linear_proj = CustomTimeDistributedDense(output_dim = dim_proj, input_dim = dim_glove)
+
+	pass_input = Input(shape=(maxlen_pass,dim_glove), dtype='float32', name='pass_input')
+	pass_con = shared_linear_proj(pass_input)
+
+	ques_input = Input(shape=(maxlen,dim_glove), dtype='float32', name='ques_input')
+	ques_proj = shared_linear_proj(ques_input)
+	ques_con = Lambda(sum_along_time, sum_along_time_output_shape)(ques_proj)
+
+	repeat_ques = RepeatVector(maxlen_pass)(ques_con)
+	mul_ques_pass = merge([pass_con,repeat_ques],mode='mul') # maxlen_pass, dim_proj
+	permute_qp_mul = Permute((2,1))(mul_ques_pass) # dim_proj, maxlen_pass
+	dot_ques_pass = Lambda(sum_along_time,sum_along_time_output_shape)(permute_qp_mul) # maxlen_pass
+	thecoef = Activation(args.atten_mode)(dot_ques_pass)
+	repeat_coeff = RepeatVector(dim_proj)(thecoef) # dim_proj, maxlen_pass
+	permute_coeff = Permute((2,1))(repeat_coeff) # maxlen_pass, dim_proj
+	weighted_vec = merge([permute_coeff, pass_con],mode='mul') # maxlen_pass, dim_proj
+	atten_out = Lambda(sum_along_time,sum_along_time_output_shape)(weighted_vec) # dim_proj
+
+	A1_input = Input(shape=(maxlen,dim_glove),name='A1_input',dtype='float32') # dim_glove
+	A2_input = Input(shape=(maxlen,dim_glove),name='A2_input',dtype='float32') # dim_glove
+	A3_input = Input(shape=(maxlen,dim_glove),name='A3_input',dtype='float32') # dim_glove
+	A4_input = Input(shape=(maxlen,dim_glove),name='A4_input',dtype='float32') # dim_glove
+	A5_input = Input(shape=(maxlen,dim_glove),name='A5_input',dtype='float32') # dim_glove
+
+	A1_proj = shared_linear_proj(A1_input)
+	A1_con = Lambda(sum_along_time, sum_along_time_output_shape)(A1_proj)
+	A2_proj = shared_linear_proj(A2_input)
+	A2_con = Lambda(sum_along_time, sum_along_time_output_shape)(A2_proj)
+	A3_proj = shared_linear_proj(A3_input)
+	A3_con = Lambda(sum_along_time, sum_along_time_output_shape)(A3_proj)
+	A4_proj = shared_linear_proj(A4_input)
+	A4_con = Lambda(sum_along_time, sum_along_time_output_shape)(A4_proj)
+	A5_proj = shared_linear_proj(A5_input)
+	A5_con = Lambda(sum_along_time, sum_along_time_output_shape)(A5_proj)
+
+	add = merge([atten_out,ques_con],mode='sum')
+	ques_con = Lambda(lambda x: x/2)(add)
+
+	for i in range(args.hop):
+		repeat_ques = RepeatVector(maxlen_pass)(ques_con)
+		mul_ques_pass = merge([pass_con,repeat_ques],mode='mul') # maxlen_pass, dim_prij
+		permute_qp_mul = Permute((2,1))(mul_ques_pass) # dim_proj, maxlen_pass
+		dot_ques_pass = Lambda(sum_along_time,sum_along_time_output_shape)(permute_qp_mul) # maxlen_pass
+		thecoef = Activation(args.atten_mode)(dot_ques_pass)
+		repeat_coeff = RepeatVector(dim_proj)(thecoef) # dim_proj, maxlen_pass
+		permute_coeff = Permute((2,1))(repeat_coeff) # maxlen_pass, dim_proj
+		weighted_vec = merge([permute_coeff, pass_con],mode='mul') # maxlen_pass, dim_proj
+		atten_out = Lambda(sum_along_time,sum_along_time_output_shape)(weighted_vec) # dim_proj
+		add = merge([atten_out,ques_con],mode='sum')
+		ques_con = Lambda(lambda x: x/2)(add)
+
+	A1_mul = merge([A1_con,ques_con], mode='mul')  # (batch_size, dim_fuck)
+	A2_mul = merge([A2_con,ques_con], mode='mul')
+	A3_mul = merge([A3_con,ques_con], mode='mul')
+	A4_mul = merge([A4_con,ques_con], mode='mul')
+	A5_mul = merge([A5_con,ques_con], mode='mul')
+	
+	A1_out = Lambda(sum_one,sum_one_output_shape)(A1_mul)
+	A2_out = Lambda(sum_one,sum_one_output_shape)(A2_mul)
+	A3_out = Lambda(sum_one,sum_one_output_shape)(A3_mul)
+	A4_out = Lambda(sum_one,sum_one_output_shape)(A4_mul)
+	A5_out = Lambda(sum_one,sum_one_output_shape)(A5_mul)
+
+	merge_out = merge([A1_out,A2_out,A3_out,A4_out,A5_out],mode='concat')
+	
+	final_out = Activation('softmax',name='final_out')(merge_out)
+	model = Model(input=[ques_input,pass_input,A1_input,A2_input,A3_input,A4_input,A5_input],output=[final_out])
+	
+	print "Compiling model..."
+        #rmsprop = RMSprop(lr=args.lr)
+	sgd = SGD(lr=args.lr)
+	model.compile(loss={'final_out':"categorical_crossentropy"}, optimizer=sgd,metrics=['accuracy'])
+	print "Compilation done..."
+	
+	return model
+
+def twoGRUmodel(args, maxlen, maxlen_pass, dim_glove):
+	#maxlen_pass = maxlen
+	dim_gru = args.dim_gru
+	#dim_glove = 300
+	shared_GRU =  GRU(output_dim = dim_gru, dropout_W=args.dropout, return_sequences = False, input_shape = (maxlen,dim_glove), init = 'glorot_uniform', inner_init = 'orthogonal', inner_activation = 'hard_sigmoid')
+	shared_backGRU = GRU(output_dim = dim_gru,dropout_W=args.dropout ,go_backwards=True, return_sequences = False, input_shape = (maxlen,dim_glove), init = 'glorot_uniform', inner_init = 'orthogonal', inner_activation = 'hard_sigmoid')
 def twoLSTMmodel(args, maxlen, maxlen_pass, dim_glove):
 	#maxlen_pass = maxlen
 	dim_gru = args.dim_gru

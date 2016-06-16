@@ -53,8 +53,8 @@ maxlen_pass = np.shape(passages)[1]
 maxlen = np.shape(A1)[0]
 '''
 Qnum = 9848
-maxlen = 32
-maxlen_pass = 1346
+maxlen = 1
+maxlen_pass = 12
 
 path_name = args.path
 passMemmap_name = path_name+"pass.memmap"
@@ -75,11 +75,11 @@ A4 = np.memmap(A4Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim
 A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim_glove))
 true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
-'''val_Qnum = 1958
-val_maxlen = 32
-val_maxlen_pass = 995
+val_Qnum = 1958
+val_maxlen = 1
+val_maxlen_pass = 12
 
-val_path_name = "./Memmap/val.plot.5.100d.mp=995.m=32.Q=1958.lstm/"
+val_path_name = "./Memmap/val.plot.SEN.300d.mp=12.m=1.Q=1958.lstm/"
 val_passMemmap_name = val_path_name+"pass.memmap"
 val_queMemmap_name = val_path_name+"que.memmap"
 val_A1Memmap_name = val_path_name+"A1.memmap"
@@ -96,7 +96,7 @@ val_A2 = np.memmap(val_A2Memmap_name, dtype='float32', mode='r+', shape=(val_Qnu
 val_A3 = np.memmap(val_A3Memmap_name, dtype='float32', mode='r+', shape=(val_Qnum,val_maxlen,dim_glove))
 val_A4 = np.memmap(val_A4Memmap_name, dtype='float32', mode='r+', shape=(val_Qnum,val_maxlen,dim_glove))
 val_A5 = np.memmap(val_A5Memmap_name, dtype='float32', mode='r+', shape=(val_Qnum,val_maxlen,dim_glove))
-val_true_ans = np.memmap(val_ansMemmap_name, dtype='float32', mode='r+', shape=(val_Qnum,5))'''
+val_true_ans = np.memmap(val_ansMemmap_name, dtype='float32', mode='r+', shape=(val_Qnum,5))
 
 model = twoGRUmodel(args, maxlen, maxlen_pass, dim_glove)
 #pdb.set_trace()
@@ -106,10 +106,10 @@ model.fit(
 	{'final_out':true_ans},
 	batch_size=args.batch_size,
 	nb_epoch = args.epochs,
-	validation_split=0.2,
-				#validation_data=(
-				#{'ques_input':val_questions, 'pass_input':val_passages, 'A1_input':val_A1, 'A2_input':val_A2, 'A3_input':val_A3, 'A4_input':val_A4, 'A5_input':val_A5},
-				#{'final_out':val_true_ans}),
+	#validation_split=0.2,
+				validation_data=(
+				{'ques_input':val_questions, 'pass_input':val_passages, 'A1_input':val_A1, 'A2_input':val_A2, 'A3_input':val_A3, 'A4_input':val_A4, 'A5_input':val_A5},
+				{'final_out':val_true_ans}),
 			shuffle=True
 	)
 	
