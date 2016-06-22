@@ -53,8 +53,8 @@ maxlen_pass = np.shape(passages)[1]
 maxlen = np.shape(A1)[0]
 '''
 Qnum = 9848
-maxlen = 1
-maxlen_pass = 12
+maxlen = 32
+maxlen_pass = 265
 
 path_name = args.path
 passMemmap_name = path_name+"pass.memmap"
@@ -76,10 +76,10 @@ A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim
 true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
 val_Qnum = 1958
-val_maxlen = 1
-val_maxlen_pass = 12
+val_maxlen = 32
+val_maxlen_pass = 265
 
-val_path_name = "./Memmap/val.plot.SEN.300d.mp=12.m=1.Q=1958.lstm/"
+val_path_name = "./Memmap/val.plot.5.100d.mp=265.m=32.Q=1958.lstm/"
 val_passMemmap_name = val_path_name+"pass.memmap"
 val_queMemmap_name = val_path_name+"que.memmap"
 val_A1Memmap_name = val_path_name+"A1.memmap"

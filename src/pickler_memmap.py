@@ -154,13 +154,14 @@ for aQ in qa:
     passage = story[aQ[4]]
     sen_wordList = []
     sen_cosinSim = []
-    for sentence in passage:
-	theList = wordToVec(sentence)
+    for passa in passage:
+	for sentence in passa.split('.'):
+	    theList = wordToVec(sentence)
 	#if len(theList)>200:
 	#   pdb.set_trace()
-	sen_wordList.append(theList)
-	average_sen = np.mean( np.asarray(theList,dtype='float32'), axis=0 )
-	sen_cosinSim.append( np.dot(average_sen,que_averageList.T)/( math.sqrt(np.dot(average_sen,average_sen))*math.sqrt(np.dot(que_averageList,que_averageList)) )  )
+	    sen_wordList.append(theList)
+	    average_sen = np.mean( np.asarray(theList,dtype='float32'), axis=0 )
+	    sen_cosinSim.append( np.dot(average_sen,que_averageList.T)/( math.sqrt(np.dot(average_sen,average_sen))*math.sqrt(np.dot(que_averageList,que_averageList)) )  )
     sen_chosenWords = []
     num = 0
     #while sen_cosinSim:
@@ -218,8 +219,9 @@ maxlen = findMaxlen(A5,maxlen)
 maxlen = findMaxlen(questions,maxlen)'''
 maxlen = 32
 print "MAX_len A&Q  : "+str(maxlen)
-#maxlen_pass = findMaxlen(passages)
-maxlen_pass = 1346
+maxlen_pass = findMaxlen(passages)
+print "Original MAX_len:   "+str(maxlen_pass)
+maxlen_pass = 265
 print "MAX_len pass : "+str(maxlen_pass)
 Qnum = len(passages)
 print "Qnum : "+str(Qnum)

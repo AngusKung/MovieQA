@@ -116,12 +116,15 @@ class DataLoader(object):
             this_split_movies = self.data_split['val']
         elif split == 'test':
             this_split_movies = self.data_split['test']
+        elif split == 'trainval':
+            this_split_movies = list(self.data_split['train'])
+            this_split_movies.extend(self.data_split['val'])
         elif split == 'full':
             this_split_movies = list(self.data_split['train'])
             this_split_movies.extend(self.data_split['val'])
             this_split_movies.extend(self.data_split['test'])
         else:
-            raise ValueError('Invalid split type. Use "train", "val", "test", or "full"')
+            raise ValueError('Invalid split type. Use "train", "val", "trainval", "test", or "full"')
 
         return this_split_movies
 
@@ -130,8 +133,8 @@ class DataLoader(object):
         """Provide data based on a particular split and story-type.
 
         Args:
-          split:        'train' OR 'val' OR 'test' OR 'full'.
-          story_type:   'plot', 'subtitle', 'dvs', 'script'.
+          split:        'train' OR 'val' OR 'trainval' OR 'test' OR 'full'.
+          story_type:   'plot', 'split_plot', 'subtitle', 'dvs', 'script'.
 
         Returns:
           story:        Story for each movie indexed by imdb_key.

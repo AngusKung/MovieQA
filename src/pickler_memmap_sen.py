@@ -16,7 +16,7 @@ from keras.preprocessing.sequence import pad_sequences
 #pickBestNum = 5
 #cosinSim = 0.75
 
-split = 'train' #'train' OR 'val' OR 'test' OR 'full'
+split = 'val' #'train' OR 'val' OR 'test' OR 'full'
 story_type='plot' #'plot', 'subtitle', 'dvs', 'script'
 
 #wordvec_file = '../GloVe/glove.6B.300d.txt'
@@ -121,7 +121,8 @@ def wordToVec(entry):
 	    except:
 		print word
     if count != 0:
-	return np.divide(temp_vector,count)
+	vector = np.divide(temp_vector,count)
+	return np.divide(vector,np.linalg.norm(vector))
     else:
         return np.zeros(dim_glove,dtype='float32')
 
@@ -144,6 +145,7 @@ lastNum = 0
 for aQ in qa:
     #pdb.set_trace()
     print aQ[0]
+    print str(aQ[1])
     oneQ = []
     que_wordList = wordToVec(str(aQ[1])).reshape((1,300))
     #que_averageList = np.mean( np.asarray(que_wordList,dtype='float32'), axis=0 )
@@ -155,11 +157,12 @@ for aQ in qa:
     passage = story[aQ[4]]
     sen_wordList = []
     sen_cosinSim = []
-    for sentence in passage:
-	theList = wordToVec(sentence)
+    for passa in passage:
+	for sentence in passa.split('.'):
+	    theList = wordToVec(sentence)
 	#if len(theList)>200:
 	#   pdb.set_trace()
-	sen_wordList.append(theList)
+	    sen_wordList.append(theList)
 	#average_sen = np.mean( np.asarray(theList,dtype='float32'), axis=0 )
 	#sen_cosinSim.append( np.dot(average_sen,que_averageList.T)/( math.sqrt(np.dot(average_sen,average_sen))*math.sqrt(np.dot(que_averageList,que_averageList)) )  )
     sen_chosenWords = []
@@ -219,7 +222,8 @@ maxlen = findMaxlen(A5,maxlen)
 maxlen = findMaxlen(questions,maxlen)'''
 maxlen = 1
 print "MAX_len A&Q  : "+str(maxlen)
-maxlen_pass = findMaxlen(passages)
+maxlen_pass = 115
+#maxlen_pass = findMaxlen(passages)
 print "MAX_len pass : "+str(maxlen_pass)
 Qnum = len(passages)
 print "Qnum : "+str(Qnum)

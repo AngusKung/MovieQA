@@ -15,11 +15,12 @@ from keras.preprocessing.sequence import pad_sequences
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-dim_proj", type=int, default=100)
 parser.add_argument("-dropout", type=float, default=0)
 parser.add_argument("-activation", type=str, default="softplus")
-parser.add_argument("-epochs", type=int, default=500)
+parser.add_argument("-epochs", type=int, default=100)
 parser.add_argument("-model_save_interval", type=int, default=10)
-parser.add_argument("-batch_size", type=int, default=32)
+parser.add_argument("-batch_size", type=int, default=256)
 parser.add_argument("-lr", type=float, default=0.01)
 parser.add_argument("-hop", type=int, default=0)
 parser.add_argument("-atten_mode", type=str, choices=['sigmoid','softmax'], default="softmax")
@@ -31,7 +32,7 @@ args = parser.parse_args()
 print "Running with args:"
 print args
 
-dim_glove = 100
+dim_glove = 6072
 #path = './Pickle/val.plot.lstm.pickle'
 
 
@@ -51,8 +52,8 @@ maxlen_pass = np.shape(passages)[1]
 maxlen = np.shape(A1)[0]
 '''
 Qnum = 9848
-maxlen = 32
-maxlen_pass = 1346
+maxlen = 1
+maxlen_pass = 94
 
 path_name = args.path
 passMemmap_name = path_name+"pass.memmap"
@@ -74,10 +75,10 @@ A5 = np.memmap(A5Memmap_name, dtype='float32', mode='r+', shape=(Qnum,maxlen,dim
 true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
 val_Qnum = 1958
-val_maxlen = 32
-val_maxlen_pass = 1346
+val_maxlen = 1
+val_maxlen_pass = 94
 
-val_path_name = "./Memmap/val.plot.5.100d.mp=1346.m=32.Q=1958.lstm/"
+val_path_name = "./Memmap/val.plot.SEN.6072d.mp=94.m=1.Q=1958.tfidf/"
 val_passMemmap_name = val_path_name+"pass.memmap"
 val_queMemmap_name = val_path_name+"que.memmap"
 val_A1Memmap_name = val_path_name+"A1.memmap"
@@ -98,6 +99,7 @@ val_true_ans = np.memmap(val_ansMemmap_name, dtype='float32', mode='r+', shape=(
 
 model = MemNN(args, maxlen, maxlen_pass, dim_glove)
 #pdb.set_trace()
+
 print "Training started..."
 model.fit(
 	{'ques_input':questions, 'pass_input':passages, 'A1_input':A1, 'A2_input':A2, 'A3_input':A3, 'A4_input':A4, 'A5_input':A5},
