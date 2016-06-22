@@ -6,7 +6,7 @@ import pdb
 
 """my .py file"""
 from parse import mk_newgru300, save_3d_array, load_3d_array, save_2d_array, load_2d_array
-from mybiGRU import oneGRUmodel, twoGRUmodel,MQA_datagen
+from mybiGRU import twoLSTMmodel, twoGRUmodel,MQA_datagen
 from mybiGRU import loadMQAPickle,findMaxlen
 
 
@@ -33,7 +33,7 @@ args = parser.parse_args()
 print "Running with args:"
 print args
 
-dim_glove = 100
+dim_glove = 6072
 #path = './Pickle/val.plot.lstm.pickle'
 
 
@@ -54,7 +54,7 @@ maxlen = np.shape(A1)[0]
 '''
 Qnum = 9848
 maxlen = 1
-maxlen_pass = 12
+maxlen_pass = 94
 
 path_name = args.path
 passMemmap_name = path_name+"pass.memmap"
@@ -77,9 +77,9 @@ true_ans = np.memmap(ansMemmap_name, dtype='float32', mode='r+', shape=(Qnum,5))
 
 val_Qnum = 1958
 val_maxlen = 1
-val_maxlen_pass = 12
+val_maxlen_pass = 94
 
-val_path_name = "./Memmap/val.plot.SEN.300d.mp=12.m=1.Q=1958.lstm/"
+val_path_name = "./Memmap/val.plot.SEN.6072d.mp=94.m=1.Q=1958.tfidf/"
 val_passMemmap_name = val_path_name+"pass.memmap"
 val_queMemmap_name = val_path_name+"que.memmap"
 val_A1Memmap_name = val_path_name+"A1.memmap"
@@ -98,7 +98,7 @@ val_A4 = np.memmap(val_A4Memmap_name, dtype='float32', mode='r+', shape=(val_Qnu
 val_A5 = np.memmap(val_A5Memmap_name, dtype='float32', mode='r+', shape=(val_Qnum,val_maxlen,dim_glove))
 val_true_ans = np.memmap(val_ansMemmap_name, dtype='float32', mode='r+', shape=(val_Qnum,5))
 
-model = twoGRUmodel(args, maxlen, maxlen_pass, dim_glove)
+model = twoLSTMmodel(args, maxlen, maxlen_pass, dim_glove)
 #pdb.set_trace()
 print "Training started..."
 model.fit(

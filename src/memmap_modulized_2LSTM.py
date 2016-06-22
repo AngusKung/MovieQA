@@ -33,7 +33,7 @@ args = parser.parse_args()
 print "Running with args:"
 print args
 
-dim_glove = 100
+dim_glove = 300
 #path = './Pickle/val.plot.lstm.pickle'
 
 
@@ -79,7 +79,7 @@ val_Qnum = 1958
 val_maxlen = 32
 val_maxlen_pass = 1346
 
-val_path_name = "./Memmap/val.plot.5.100d.mp=1346.m=32.Q=1958.lstm/"
+val_path_name = "./Memmap/val.plot.5.300d.mp=1346.m=32.Q=1958.lstm/"
 val_passMemmap_name = val_path_name+"pass.memmap"
 val_queMemmap_name = val_path_name+"que.memmap"
 val_A1Memmap_name = val_path_name+"A1.memmap"
